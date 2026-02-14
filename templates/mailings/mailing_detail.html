@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Детали рассылки{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h2 style="margin-bottom: 1.5rem; color: #667eea;">Рассылка #{{ mailing.id }}</h2>
+
+    <div style="margin-bottom: 1.5rem;">
+        <strong>Статус:</strong>
+        {% if mailing.get_status == 'created' %}
+            <span style="color: #667eea; font-weight: 500;">Создана</span>
+        {% elif mailing.get_status == 'running' %}
+            <span style="color: #2ecc71; font-weight: 500;">Запущена</span>
+        {% else %}
+            <span style="color: #95a5a6; font-weight: 500;">Завершена</span>
+        {% endif %}
+        <br>
+        <strong>Период:</strong> {{ mailing.start_time|date:"d.m.Y H:i" }} — {{ mailing.end_time|date:"d.m.Y H:i" }}
+        <br>
+        <strong>Сообщение:</strong> {{ mailing.message.subject }}
+        <br>
+        <strong>Получатели:</strong> {{ mailing.recipients.count }}
+        <br>
+        <strong>Владелец:</strong> {{ mailing.owner.email }}
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+        <strong>Список получателей:</strong>
+        <ul style="margin-top: 0.5rem;">
+            {% for client in mailing.recipients.all %}
+                <li>{{ client.full_name }} ({{ client.email }})</li>
+            {% empty %}
+                <li style="color: #95a5a6;">Нет получателей</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div style="display: flex; gap: 1rem;">
+        {% if mailing.get_status == 'running' and mailing.is_active %}
+            <a href="{% url 'mailings:send_mailing' mailing.pk %}" style="display: inline-block; padding: 0.75rem 1.5rem; background: #2ecc71; color: white; text-decoration: none; border-radius: 4px;">
+                📧 Запустить рассылку
+            </a>
+        {% endif %}
+        <a href="{% url 'mailings:mailing_update' mailing.pk %}" style="display: inline-block; padding: 0.75rem 1.5rem; background: #3498db; color: white; text-decoration: none; border-radius: 4px;">
+            ✏️ Редактировать
+        </a>
+        <a href="{% url 'mailings:mailing_list' %}" style="display: inline-block; padding: 0.75rem 1.5rem; background: #95a5a6; color: white; text-decoration: none; border-radius: 4px;">
+            Назад к списку
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Редактирование{% else %}Создание{% endif %} клиента{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h2>{% if object %}Редактирование клиента{% else %}Добавление клиента{% endif %}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="id_email" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email:</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <span style="color: red; font-size: 0.875rem;">{{ form.email.errors }}</span>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="id_full_name" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ф.И.О.:</label>
+            {{ form.full_name }}
+            {% if form.full_name.errors %}
+                <span style="color: red; font-size: 0.875rem;">{{ form.full_name.errors }}</span>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="id_comment" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Комментарий:</label>
+            {{ form.comment }}
+            {% if form.comment.errors %}
+                <span style="color: red; font-size: 0.875rem;">{{ form.comment.errors }}</span>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" style="flex: 1; padding: 0.75rem; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                {% if object %}Сохранить{% else %}Создать{% endif %}
+            </button>
+            <a href="{% url 'mailings:client_list' %}" style="flex: 1; padding: 0.75rem; background: #95a5a6; color: white; text-decoration: none; text-align: center; border-radius: 4px;">
+                Отмена
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

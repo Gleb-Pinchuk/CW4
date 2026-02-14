@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Редактирование{% else %}Создание{% endif %} сообщения{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h2>{% if object %}Редактирование сообщения{% else %}Создание сообщения{% endif %}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="id_subject" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Тема письма:</label>
+            {{ form.subject }}
+            {% if form.subject.errors %}
+                <span style="color: red; font-size: 0.875rem;">{{ form.subject.errors }}</span>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="id_body" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Тело письма:</label>
+            {{ form.body }}
+            {% if form.body.errors %}
+                <span style="color: red; font-size: 0.875rem;">{{ form.body.errors }}</span>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" style="flex: 1; padding: 0.75rem; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                {% if object %}Сохранить{% else %}Создать{% endif %}
+            </button>
+            <a href="{% url 'mailings:message_list' %}" style="flex: 1; padding: 0.75rem; background: #95a5a6; color: white; text-decoration: none; text-align: center; border-radius: 4px;">
+                Отмена
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
