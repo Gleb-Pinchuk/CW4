@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Сообщения{% endblock %}
+
+{% block content %}
+<div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h2 style="margin-bottom: 1.5rem; color: #667eea;">Список сообщений</h2>
+
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{% url 'mailings:message_create' %}" style="display: inline-block; padding: 0.75rem 1.5rem; background: #2ecc71; color: white; text-decoration: none; border-radius: 4px;">
+            ➕ Добавить сообщение
+        </a>
+    </div>
+
+    {% if messages %}
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f5f5f5;">
+                <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #e0e0e0;">ID</th>
+                <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #e0e0e0;">Тема</th>
+                <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #e0e0e0;">Тело письма</th>
+                <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #e0e0e0;">Владелец</th>
+                <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid #e0e0e0;">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+            <tr style="border-bottom: 1px solid #f0f0f0;">
+                <td style="padding: 0.75rem;">{{ message.id }}</td>
+                <td style="padding: 0.75rem;">{{ message.subject }}</td>
+                <td style="padding: 0.75rem;">{{ message.body|truncatechars:50 }}</td>
+                <td style="padding: 0.75rem;">{{ message.owner.email }}</td>
+                <td style="padding: 0.75rem;">
+                    <a href="{% url 'mailings:message_update' message.pk %}" style="display: inline-block; padding: 0.5rem 1rem; background: #3498db; color: white; text-decoration: none; border-radius: 4px; margin-right: 0.5rem;">✏️ Редактировать</a>
+                    <a href="{% url 'mailings:message_delete' message.pk %}" style="display: inline-block; padding: 0.5rem 1rem; background: #e74c3c; color: white; text-decoration: none; border-radius: 4px;">🗑️ Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: #95a5a6;">Список сообщений пуст.</p>
+    {% endif %}
+</div>
+{% endblock %}
