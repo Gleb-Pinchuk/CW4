@@ -16,5 +16,17 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/yourusername/mailing_service.git
+git clone https://github.com/Gleb-Pinchuk/CW4.git
 cd mailing_service
+```
+
+2. Создание виртуального окружения
+python -m venv venv
+venv\Scripts\activate
+
+3. Установка зависимостей
+pip install -r requirements.txt
+
+## Лицензия
+
+Этот проект создан в учебных целях.
